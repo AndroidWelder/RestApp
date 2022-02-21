@@ -1,0 +1,348 @@
+swagger: "2.0"
+info:
+  description: UMS Service
+  version: 1.0.0
+  title: UMS API
+host: ums
+basePath: /api/v1
+tags:
+  - name: role
+    description: Operations about roles
+  - name: user
+    description: Operations about users
+  - name: login/logout
+    description: Operations about sessions
+schemes:
+  - https
+  - http
+paths:
+  /role:
+    post:
+      tags:
+        - role
+      summary: Create role
+      description: This can only be done by the logged in user.
+      operationId: createRole
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created role object
+          required: true
+          schema:
+            $ref: '#/definitions/Role'
+      responses:
+        default:
+          description: successful operation
+    get:
+      tags:
+        - role
+      summary: Get role by name
+      description: ''
+      operationId: getRoleByName
+      produces:
+        - application/json
+      parameters:
+        - name: rolename
+          in: query
+          description: The name that needs to be fetched.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Role'
+        '400':
+          description: Invalid rolename supplied
+        '404':
+          description: Role not found
+    put:
+      tags:
+        - role
+      summary: Updated role name
+      operationId: updateRole
+      produces:
+        - application/json
+      parameters:
+        - name: rolename
+          in: query
+          description: name that need to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated role object
+          required: true
+          schema:
+            $ref: '#/definitions/Role'
+      responses:
+        '400':
+          description: Invalid role supplied
+        '404':
+          description: Role not found
+    delete:
+      tags:
+        - role
+      summary: Delete role
+      description: This can only be done by the logged in user.
+      operationId: deleteRole
+      produces:
+        - application/json
+      parameters:
+        - name: rolename
+          in: query
+          description: The role that needs to be deleted
+          required: true
+          type: string
+      responses:
+        '400':
+          description: Invalid role supplied
+        '404':
+          description: Role not found
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        default:
+          description: successful operation
+    get:
+      tags:
+        - user
+      summary: Get user by user name
+      description: ''
+      operationId: getUserByName
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: The name that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: The name that needs to be deleted
+          required: true
+          type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+  /user/role:
+    post:
+      tags:
+        - user
+      summary: Assign role to user
+      description: This can only be done by the logged in user.
+      operationId: createUserRole
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/UserRole'
+      responses:
+        default:
+          description: successful operation
+    get:
+      tags:
+        - user
+      summary: Get role by user name
+      description: ''
+      operationId: getRoleByUserName
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: The name that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/UserRole'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Updated user's role
+      description: This can only be done by the logged in user.
+      operationId: updateUserRole
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Updated user object with new role
+          required: true
+          schema:
+            $ref: '#/definitions/UserRole'
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+  /session/login:
+    get:
+      tags:
+        - login/logout
+      summary: Get last login for user
+      description: This can only be done by the logged in user.
+      operationId: getLastSessionStart
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Session'
+  /session/logout:
+    get:
+      tags:
+        - login/logout
+      summary: Get last logout for user
+      description: This can only be done by the logged in user.
+      operationId: getLastSessionEnd
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Session'
+    post:
+      tags:
+        - login/logout
+      summary: Set logout for user
+      description: This can only be done by the logged in user.
+      operationId: setLastSessionEnd
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Set Log out data for user
+          required: true
+          schema:
+            $ref: '#/definitions/Session'
+      responses:
+        default:
+          description: successful operation
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: 'http://ums/oauth/user'
+    flow: implicit
+    scopes:
+      'write:users': modify pets in your account
+      'read:users': read your pets
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  UserRole:
+    type: object
+    properties:
+       username:
+         type: string
+       rolename:
+         type: string
+  Role:
+    type: object
+    properties:
+      rolename:
+        type: string
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+  Session:
+    type: object
+    properties:
+      username:
+        type: string
+      login:
+        type: number
+      logout:
+        type: number
